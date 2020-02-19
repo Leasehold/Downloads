@@ -20,7 +20,7 @@ run_install_u16 ()
         read -p "Do you want to install missing packages ($1)? [Y/n]: " answer
                 answer=${answer:N}
         [[ $answer =~ [Yy] && $1 = "nodejs" ]] && /usr/bin/curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -qqy nodejs
-                [[ $answer =~ [Yy] && $1 = "postgresql-10" ]] && sudo apt-get install -qqy postgresql-9.5
+                [[ $answer =~ [Yy] && $1 = "postgresql-10" ]] && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list' && sudo apt-get -qqy update && sudo apt-get -qqy install postgresql-10
                 [[ $answer =~ [Yy] ]] && sudo apt-get install -qqy $1
 }
 
