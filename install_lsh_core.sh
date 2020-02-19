@@ -31,8 +31,7 @@ packages="git nodejs postgresql-10 curl wget build-essential"
 for pack in $packages; do
         if grep -sq "18." /etc/lsb-release; then
                 dpkg -s $pack >/dev/null 2>&1 || run_install_u18 $pack
-        fi
-        if grep -sq "16." /etc/lsb-release; then
+        elif grep -sq "16." /etc/lsb-release; then
                 dpkg -s $pack >/dev/null 2>&1 || run_install_u16 $pack
         else
                 echo -e "${YELLOW} \nThis is not a supported distro!\n ${NC}"
@@ -52,10 +51,10 @@ prepare_db ()
                         echo -e "${YELLOW} \nSome databases already exist! You can see existing databases with: sudo -Hiu postgres psql -lqt\n ${NC}"
                 else
                         
-                        sudo -u postgres -i createuser --createdb lisk
-                        sudo -u postgres -i createdb lisk_test --owner lisk
-                        sudo -u postgres -i createdb leasehold_test --owner lisk
-                        sudo -Hiu postgres psql -d lisk_test -c "alter user lisk with password '$DBpassword';"
+                        sudo -u postgres -i createuser --createdb leasehold
+                        sudo -u postgres -i createdb lisk_test --owner leasehold
+                        sudo -u postgres -i createdb leasehold_test --owner leasehold
+                        sudo -Hiu postgres psql -d lisk_test -c "alter user leasehold with password '$DBpassword';"
                         echo -e "${GREEN}Done!\n ${NC}"
                                 fi
 
