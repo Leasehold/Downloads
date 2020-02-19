@@ -70,8 +70,8 @@ install_lsh_core ()
                         cd ~
                         /usr/bin/git clone https://github.com/Leasehold/leasehold-core.git
                         cd ~/leasehold-core
-                        sudo /usr/bin/npm install
-                        sudo /usr/bin/npm install pm2 -g
+                        sudo /usr/bin/npm install --no-progress
+                        sudo /usr/bin/npm install --no-progress pm2 -g
                         echo -e "${GREEN}Done!\n ${NC}"
         else
                 echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should not exist in home directory!\n ${NC}"
