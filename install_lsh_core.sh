@@ -82,17 +82,20 @@ install_lsh_core ()
 
 start_lsh ()
 {
-        if [ `whoami` = 'leasehold' ] && [ ! -d ~/leasehold-core ];then
+        if [ `whoami` = 'leasehold' ] && [ -d ~/leasehold-core ];then
                 echo -e "${GREEN} \nStarting process with \"pm2\"\n ${NC}"
-                        if ! pm2 list | grep -qw "leasehold-core"; then
+                        if ! /usr/bin/pm2 list | grep -w "leasehold-core"; then
                                 cd ~/leasehold-core
                                         pm2 start index.js --name "leasehold-core"
                         else
                                 echo -e "${RED} \nThere is already a process \"leasehold-core\" in pm2 ! Delete it before running again (pm2 delete leasehold-core)\n ${NC}"
                                         exit 0
-                                        fi
                         fi
+        else
+                echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" SHOULD exist in home directory!\n ${NC}"
+        fi
 }
+
 
 prepare_db
 install_lsh_core
