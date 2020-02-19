@@ -12,7 +12,7 @@ run_install ()
         read -p "Do you want to install missing packages ($1)? [Y/n]: " answer
         answer=${answer:N}
         [[ $answer =~ [Yy] && $1 = "nodejs" ]] && /usr/bin/curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt install -y nodejs
-        [[ $answer =~ [Yy] ]] && sudo apt install $1
+        [[ $answer =~ [Yy] ]] && sudo apt install -y $1
 }
 
 packages="git nodejs postgresql-10 curl wget build-essential"
