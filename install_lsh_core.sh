@@ -46,16 +46,17 @@ done
 prepare_db ()
 {
 
-        echo -e "${GREEN} \nRunning Postgres database preparation steps:\n ${NC}"
+        echo -e "${GREEN} \nRunning Postgres database steps!\n ${NC}"
 
                 if sudo -Hiu postgres psql -lqt | cut -d \| -f 1 | grep -qw 'lisk_test\|leasehold_test'; then
                         echo -e "${YELLOW} \nSome databases already exist! You can see existing databases with: sudo -Hiu postgres psql -lqt\n ${NC}"
                 else
-                        echo -e "${GREEN} \nCreating Postgres databases\n ${NC}"
-                                sudo -u postgres -i createuser --createdb lisk
-                                sudo -u postgres -i createdb lisk_test --owner lisk
-                                sudo -u postgres -i createdb leasehold_test --owner lisk
-                                sudo -Hiu postgres psql -d lisk_test -c "alter user lisk with password '$DBpassword';"
+                        
+                        sudo -u postgres -i createuser --createdb lisk
+                        sudo -u postgres -i createdb lisk_test --owner lisk
+                        sudo -u postgres -i createdb leasehold_test --owner lisk
+                        sudo -Hiu postgres psql -d lisk_test -c "alter user lisk with password '$DBpassword';"
+                        echo -e "${GREEN}Done!\n ${NC}"
                                 fi
 
 }
@@ -71,7 +72,7 @@ install_lsh_core ()
                         cd ~/leasehold-core
                         sudo /usr/bin/npm install
                         sudo /usr/bin/npm install pm2 -g
-                        echo -e "${GREEN} \nStarting process with \"pm2\"\n ${NC}"
+                        echo -e "${GREEN}Done!\n ${NC}"
         else
                 echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should not exist in home directory!\n ${NC}"
                         exit 0
@@ -82,11 +83,12 @@ install_lsh_core ()
 
 start_lsh ()
 {
-        if [ `whoami` = 'leasehold' ] && [ -d ~/leasehold-core ];then
+        if [ `whoami` = 'leasehold' ] && [ -f ~/leasehold-core/index.js ];then
                 echo -e "${GREEN} \nStarting process with \"pm2\"\n ${NC}"
                         if ! /usr/bin/pm2 list | grep -w "leasehold-core"; then
                                 cd ~/leasehold-core
-                                        pm2 start index.js --name "leasehold-core"
+                                pm2 start index.js --name "leasehold-core"
+                                echo -e "${GREEN}Done!\n ${NC}"
                         else
                                 echo -e "${RED} \nThere is already a process \"leasehold-core\" in pm2 ! Delete it before running again (pm2 delete leasehold-core)\n ${NC}"
                                         exit 0
@@ -100,3 +102,4 @@ start_lsh ()
 prepare_db
 install_lsh_core
 start_lsh
+echo -e "${GREEN} \nAll steps are done! You can verify if the process is running by \"pm2 list\" and accessing endpoint via <ip>:7010/api/node/status\n ${NC}"
