@@ -91,7 +91,7 @@ start_lsh ()
                                 echo -e "${RED} \nThere is already a process \"leasehold-core\" in pm2 ! Delete it before running again (pm2 delete leasehold-core)\n ${NC}"
                                         exit 0
                                         fi
-                                        fi
+                        fi
 }
 
 prepare_db
