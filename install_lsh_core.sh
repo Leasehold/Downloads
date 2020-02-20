@@ -9,25 +9,19 @@ NC='\033[0m'
 
 run_install_u18 ()
 {
-        #read -p "Do you want to install missing packages ($1)? [Y/n]: " answer
-        #        answer=${answer:N}
-        #[[ $answer =~ [Yy] && $1 = "nodejs" ]] && /usr/bin/curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -qqy nodejs
-         [[ $1 = "nodejs" ]] && /usr/bin/curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -qqy nodejs
-        #       [[ $answer =~ [Yy] ]] && sudo apt-get install -qqy $1
+        [[ $1 = "nodejs" ]] && /usr/bin/curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -qqy nodejs
         sudo apt-get install -qqy $1
 }
 
 run_install_u16 ()
 {
-        #read -p "Do you want to install missing packages ($1)? [Y/n]: " answer
-        #        answer=${answer:N}
         [[ $1 = "nodejs" ]] && /usr/bin/curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -qqy nodejs
-                [[ $1 = "postgresql-10" ]] && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list' && sudo apt-get -qqy update && sudo apt-get -qqy install postgresql-10
-                sudo apt-get install -qqy $1
+        [[ $1 = "postgresql-10" ]] && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - && sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main" > /etc/apt/sources.list.d/PostgreSQL.list' && sudo apt-get -qqy update && sudo apt-get -qqy install postgresql-10
+        sudo apt-get install -qqy $1
 }
 
 
-echo -e "${GREEN} \nTrying to install missing packages:\n ${NC}"
+echo -e "${GREEN} \nInstalling missing packages:\n ${NC}"
 packages="git nodejs postgresql-10 curl wget build-essential"
 
 for pack in $packages; do
@@ -41,6 +35,7 @@ for pack in $packages; do
         fi
 done
 
+echo -e "${GREEN}Done!\n ${NC}"
 
 
 
@@ -59,7 +54,10 @@ prepare_db ()
                         sudo -u postgres -i createdb lisk_test --owner leasehold
                         sudo -u postgres -i createdb leasehold_test --owner leasehold
                         sudo -Hiu postgres psql -d lisk_test -c "alter user leasehold with password '$DBpassword';"
-                        echo -e "${GREEN}Uploading Lisk snapshot to DB\n ${NC}"
+                        sudo -Hiu postgres psql -d lisk_test -c "alter role leasehold superuser;
+                        echo -e "${GREEN}Done!\n ${NC}"
+                        
+                        echo -e "${GREEN} \nUploading Lisk snapshot to DB\n ${NC}"
                         wget http://snapshots.lisk.io.s3-eu-west-1.amazonaws.com/lisk/testnet/lisk_test_backup-10196059.gz
                         gzip --decompress --to-stdout ./lisk_test_backup-10196059.gz | psql lisk_test -U leasehold
                         echo -e "${GREEN}Done!\n ${NC}"
