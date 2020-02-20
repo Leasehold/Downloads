@@ -50,13 +50,15 @@ prepare_db ()
                 if sudo -Hiu postgres psql -lqt | cut -d \| -f 1 | grep -qw 'lisk_test\|leasehold_test'; then
                         echo -e "${YELLOW} \nSome databases already exist! You can see existing databases with: sudo -Hiu postgres psql -lqt\n ${NC}"
                 else
-                        
+                        sudo sed -i 's/max_connections = 100/max_connections = 300/g' /etc/postgresql/10/main/postgresql.conf
+                        sudo sed -i 's/shared_buffers = 128MB/shared_buffers = 256MB/g' /etc/postgresql/10/main/postgresql.conf
+                        sudo systemctl restart postgresql.service
                         sudo -u postgres -i createuser --createdb leasehold
                         sudo -u postgres -i createdb lisk_test --owner leasehold
                         sudo -u postgres -i createdb leasehold_test --owner leasehold
                         sudo -Hiu postgres psql -d lisk_test -c "alter user leasehold with password '$DBpassword';"
                         echo -e "${GREEN}Done!\n ${NC}"
-                                fi
+                fi
 
 }
 
