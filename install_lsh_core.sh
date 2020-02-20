@@ -5,7 +5,7 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
 NC='\033[0m'
-IP=`/sbin/ifconfig -a | grep -A1 "encap:Ethernet" | tail -1 | cut -d":" -f2 | awk '{print $1}'`
+IP=`/sbin/ifconfig -a | grep -A1 "eth0:" | tail -1 | awk '{print $2}'`
 
 run_install_u18 ()
 {
@@ -58,8 +58,8 @@ prepare_db ()
                         echo -e "${GREEN}Done!\n ${NC}"
                         
                         echo -e "${GREEN} \nUploading Lisk snapshot to DB\n ${NC}"
-                        #wget http://snapshots.lisk.io.s3-eu-west-1.amazonaws.com/lisk/testnet/lisk_test_backup-10196059.gz
-                        #gzip --decompress --to-stdout ./lisk_test_backup-10196059.gz | psql lisk_test -U leasehold
+                        wget http://snapshots.lisk.io.s3-eu-west-1.amazonaws.com/lisk/testnet/lisk_test_backup-10196059.gz
+                        gzip --decompress --to-stdout ./lisk_test_backup-10196059.gz | psql lisk_test -U leasehold
                         echo -e "${GREEN}Done!\n ${NC}"
                 fi
 
