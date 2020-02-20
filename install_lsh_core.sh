@@ -57,7 +57,7 @@ prepare_db ()
                         sudo -Hiu postgres psql -d lisk_test -c "alter role leasehold superuser;"
                         echo -e "${GREEN}Done!\n ${NC}"
                         
-                        echo -e "${GREEN} \nUploading Lisk snapshot to DB\n ${NC}"
+                        echo -e "${GREEN} \nUploading Lisk snapshot to DB!\n ${NC}"
                         wget http://snapshots.lisk.io.s3-eu-west-1.amazonaws.com/lisk/testnet/lisk_test_backup-10196059.gz
                         gzip --decompress --to-stdout ./lisk_test_backup-10196059.gz | psql lisk_test -U leasehold
                         echo -e "${GREEN}Done!\n ${NC}"
