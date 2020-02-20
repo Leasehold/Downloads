@@ -6,7 +6,7 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
 NC='\033[0m'
-IP=`/sbin/ifconfig -a | grep -A1 "eth0:" | tail -1 | awk '{print $2}'`
+IP=`/sbin/ifconfig -a | grep -A1 "eth0" | tail -1 | awk '{print $2}' | cut -d":" -f2`
 
 run_install_u18 ()
 {
