@@ -54,7 +54,7 @@ prepare_db ()
                         sudo -u postgres -i createdb lisk_test --owner leasehold
                         sudo -u postgres -i createdb leasehold_test --owner leasehold
                         sudo -Hiu postgres psql -d lisk_test -c "alter user leasehold with password '$DBpassword';"
-                        sudo -Hiu postgres psql -d lisk_test -c "alter role leasehold superuser;
+                        sudo -Hiu postgres psql -d lisk_test -c "alter role leasehold superuser;"
                         echo -e "${GREEN}Done!\n ${NC}"
                         
                         echo -e "${GREEN} \nUploading Lisk snapshot to DB\n ${NC}"
