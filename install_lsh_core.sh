@@ -95,7 +95,7 @@ start_lsh ()
                                 pm2 start index.js --name "leasehold-core"
                                 echo -e "${GREEN}Done!\n ${NC}"
                         else
-                                echo -e "${RED} \nThere is already a process \"leasehold-core\" in pm2 ! Delete it before running again (pm2 delete leasehold-core)\n ${NC}"
+                                echo -e "${RED} \nThere is already a process \"leasehold-core\" in pm2! Delete it before running again (pm2 delete leasehold-core)\n ${NC}"
                                         exit 0
                         fi
         else
