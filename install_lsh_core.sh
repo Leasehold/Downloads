@@ -106,4 +106,4 @@ start_lsh ()
 prepare_db
 install_lsh_core
 start_lsh
-echo -e "${GREEN} \nAll steps are done! You can verify if the process is running by \"pm2 list\" and accessing endpoint via <ip>:7010/api/node/status\n ${NC}"
+echo -e "${GREEN} \nAll steps are done! You can verify if the process is running by \"pm2 list\" and accessing endpoint via http://`/sbin/ifconfig -a | grep -A1 "encap:Ethernet" | tail -1 | cut -d":" -f2 | awk '{print $1}'`:7010/api/node/status\n ${NC}"
