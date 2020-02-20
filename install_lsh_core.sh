@@ -107,4 +107,4 @@ prepare_db
 install_lsh_core
 start_lsh
 
-echo -e "${GREEN} \nAll steps are done! You can verify if the process is running by \"pm2 list\" and accessing endpoint via http://$IP:7010/api/node/status\n ${NC}"
+echo -e "${GREEN} \nAll steps are done! You can verify if the process is running by \"pm2 list\" and accessing endpoint: http://$IP:7010/api/node/status\n ${NC}"
