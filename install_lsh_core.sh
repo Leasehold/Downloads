@@ -1,5 +1,6 @@
 #!/bin/bash
 
+DBpassword="password"
 LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
 LSK_SNAPSHOT="lisk_test_backup-10202724.gz"
 
