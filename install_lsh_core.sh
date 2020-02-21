@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DBpassword="password"
+LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
+LSK_SNAPSHOT="lisk_test_backup-10202724.gz"
 
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
@@ -58,10 +59,16 @@ prepare_db ()
                         sudo -Hiu postgres psql -d lisk_test -c "alter role leasehold superuser;"
                         echo -e "${GREEN}Done!\n ${NC}"
                         
-                        echo -e "${GREEN} \nUploading Lisk snapshot to DB!\n ${NC}"
-                        wget http://snapshots.lisk.io.s3-eu-west-1.amazonaws.com/lisk/testnet/lisk_test_backup-10202724.gz
-                        gzip --decompress --to-stdout ./lisk_test_backup-10196059.gz | psql lisk_test -U leasehold
-                        rm -f ./lisk_test_backup-10196059.gz
+                        echo -e "${GREEN} \nUploading LSK snapshots to DB!\n ${NC}"
+                        wget http://snapshots.lisk.io.s3-eu-west-1.amazonaws.com/lisk/testnet/$LSK_SNAPSHOT
+                        gzip --decompress --to-stdout ./$LSK_SNAPSHOT | psql lisk_test -U leasehold
+                        rm -f ./$LSK_SNAPSHOT
+                        echo -e "${GREEN}Done!\n ${NC}"
+                        
+                        echo -e "${GREEN} \nUploading LSH snapshots to DB!\n ${NC}"
+                        wget https://github.com/Leasehold/Downloads/raw/master/snapshots/testnet/$LSH_SNAPSHOT
+                        gzip --decompress --to-stdout ./$LSH_SNAPSHOT | psql leasehold_test -U leasehold
+                        rm -f ./$LSH_SNAPSHOT
                         echo -e "${GREEN}Done!\n ${NC}"
                 fi
 
