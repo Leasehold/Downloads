@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DBpassword="password"
+DB_PASSWORD="password"
 LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
 LSK_SNAPSHOT="lisk_test_backup-10202724.gz"
 
@@ -56,7 +56,7 @@ prepare_db ()
                         sudo -u postgres -i createuser --createdb leasehold
                         sudo -u postgres -i createdb lisk_test --owner leasehold
                         sudo -u postgres -i createdb leasehold_test --owner leasehold
-                        sudo -Hiu postgres psql -d lisk_test -c "alter user leasehold with password '$DBpassword';"
+                        sudo -Hiu postgres psql -d lisk_test -c "alter user leasehold with password '$DB_PASSWORD';"
                         sudo -Hiu postgres psql -d lisk_test -c "alter role leasehold superuser;"
                         echo -e "${GREEN}Done!\n ${NC}"
                         
