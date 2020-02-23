@@ -10,6 +10,16 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 IP=`/sbin/ifconfig -a | grep -A1 "eth0" | tail -1 | awk '{print $2}' | cut -d":" -f2`
 
+
+while getopts t: option
+        do
+                case "${option}"
+                in
+                t) TYPE=${OPTARG};;
+                esac
+        done
+
+
 run_install_u18 ()
 {
         [[ $1 = "nodejs" ]] && /usr/bin/curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -qqy nodejs
@@ -113,8 +123,29 @@ start_lsh ()
 }
 
 
+configure_dex()
+{
+        echo -e "${GREEN} \nPreparing DEX node! \n ${NC}"
+        cd ~/leasehold-core && wget "https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/testnet/dex-snapshot.json"
+        sed -i 's/"moduleEnabled":\s*false\s*,/"moduleEnabled": true,/g' ./config.json
+        read -p "Enter your Lisk wallet address to be used in config file: " lskWallet && sed -i "/lsk/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lskWallet\",/" ./config.json
+        read -p "Enter your Leasehold wallet address to be used in config file: " lshWallet && sed -i "/lsh/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lshWallet\",/" ./config.json
+        read -p "Enter your Lisk sharedPassphrase: " lskSharedPassphrase && sed -i "/lsk/,/sharedPassphrase/s/\"sharedPassphrase\":\s*\"\"\s*,/\"sharedPassphrase\": \"$lskSharedPassphrase\",/" ./config.json
+        read -p "Enter your Leasehold sharedPassphrase: " lshSharedPassphrase && sed -i "/lsh/,/sharedPassphrase/s/\"sharedPassphrase\":\s*\"\"\s*,/\"sharedPassphrase\": \"$lshSharedPassphrase\",/" ./config.json
+        read -p "Enter your Lisk passphrase: " lskPassphrase && sed -i "/lsk/,/passphrase/s/\"passphrase\":\s*\"\"\s*,/\"passphrase\": \"$lskPassphrase\",/" ./config.json
+        read -p "Enter your Leasehold passphrase: " lshPassphrase && sed -i "/lsh/,/passphrase/s/\"passphrase\":\s*\"\"\s*,/\"passphrase\": \"$lshPassphrase\",/" ./config.json
+
+        echo -e "${GREEN}Done!\n ${NC}"
+}
+
 prepare_db
 install_lsh_core
+
+if [ ! -z $TYPE ];then
+
+        configure_dex
+fi
+
 start_lsh
 
 echo -e "${GREEN} \nAll steps are done! You can verify if the process is running by \"pm2 list\" and accessing endpoint: http://$IP:7010/api/node/status\n ${NC}"
