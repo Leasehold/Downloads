@@ -141,8 +141,7 @@ configure_dex()
 prepare_db
 install_lsh_core
 
-if [ ! -z $TYPE ];then
-
+if [[ ! -z $TYPE && $TYPE == dex ]];then
         configure_dex
 fi
 
