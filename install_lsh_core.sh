@@ -126,7 +126,7 @@ start_lsh ()
 configure_dex()
 {
         echo -e "${GREEN} \nPreparing DEX node! \n ${NC}"
-        cd ~/leasehold-core && wget -q "https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/testnet/dex-snapshot.json"
+        cd ~/leasehold-core && wget -q "https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/testnet/dex-snapshot-lsh-lsk.json"
         sed -i 's/"moduleEnabled":\s*false\s*,/"moduleEnabled": true,/g' ./config.json
         read -p "Enter your Lisk wallet address to be used in config file: " lskWallet && sed -i "/lsk/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lskWallet\",/" ./config.json
         read -p "Enter your Leasehold wallet address to be used in config file: " lshWallet && sed -i "/lsh/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lshWallet\",/" ./config.json
