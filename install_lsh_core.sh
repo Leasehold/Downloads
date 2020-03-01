@@ -3,6 +3,7 @@
 DB_PASSWORD="password"
 LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
 LSK_SNAPSHOT="lisk_test_backup-10202724.gz"
+DEX_SNAPSHOT_FILE="dex-snapshot-lsh-lsk.json"
 
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
@@ -126,7 +127,7 @@ start_lsh ()
 configure_dex()
 {
         echo -e "${GREEN} \nPreparing DEX node! \n ${NC}"
-        cd ~/leasehold-core && wget -q "https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/testnet/dex-snapshot-lsh-lsk.json"
+        cd ~/leasehold-core && wget -q "https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/testnet/$DEX_SNAPSHOT_FILE"
         sed -i 's/"moduleEnabled":\s*false\s*,/"moduleEnabled": true,/g' ./config.json
         read -p "Enter your Lisk wallet address to be used in config file: " lskWallet && sed -i "/lsk/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lskWallet\",/" ./config.json
         read -p "Enter your Leasehold wallet address to be used in config file: " lshWallet && sed -i "/lsh/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lshWallet\",/" ./config.json
