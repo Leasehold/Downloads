@@ -25,9 +25,10 @@ if [[ "$NETWORK" != "mainnet" && "$NETWORK" != "testnet" ]];then
 fi
 
 
-# RAJMOND 
+
 [[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="" || LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
 [[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-11697856.gz" || LSK_SNAPSHOT="lisk_test_backup-10310704.gz"
+[[ "$NETWORK" == "mainnet" ]] && LSH_DB="leasehold_main" && LSK_DB="lisk_main" || LSH_DB="leasehold_test" && LSK_DB="lisk_test"
 DEX_SNAPSHOT_FILE="https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/$NETWORK/dex-snapshot-lsh-lsk.json"
 
 
@@ -67,7 +68,7 @@ load_lsk_snapshot ()
 {
 	echo -e "${GREEN} \nUploading LSK snapshots to DB!\n ${NC}"
 	wget http://snapshots.lisk.io.s3-eu-west-1.amazonaws.com/lisk/$NETWORK/$LSK_SNAPSHOT
-	gzip --decompress --to-stdout ./$LSK_SNAPSHOT | psql lisk_test -U leasehold
+	gzip --decompress --to-stdout ./$LSK_SNAPSHOT | psql $LSK_DB -U leasehold
 	rm -f ./$LSK_SNAPSHOT
 	echo -e "${GREEN}Done!\n ${NC}"
 }
@@ -77,7 +78,7 @@ load_lsh_snapshot ()
 {
 	echo -e "${GREEN} \nUploading LSH snapshots to DB!\n ${NC}"
 	wget https://github.com/Leasehold/Downloads/raw/master/snapshots/$NETWORK/$LSH_SNAPSHOT
-	gzip --decompress --to-stdout ./$LSH_SNAPSHOT | psql leasehold_test -U leasehold
+	gzip --decompress --to-stdout ./$LSH_SNAPSHOT | psql $LSH_DB -U leasehold
 	rm -f ./$LSH_SNAPSHOT
 	echo -e "${GREEN}Done!\n ${NC}"
 }
@@ -88,17 +89,17 @@ prepare_db ()
 
         echo -e "${GREEN} \nRunning Postgres database steps!\n ${NC}"
 
-                if sudo -Hiu postgres psql -lqt | cut -d \| -f 1 | grep -qw 'lisk_test\|leasehold_test'; then
+                if sudo -Hiu postgres psql -lqt | cut -d \| -f 1 | grep -qw '$LSK_DB\|$LSH_DB'; then
                         echo -e "${YELLOW} \nSome databases already exist! You can see existing databases with: sudo -Hiu postgres psql -lqt\n ${NC}"
                 else
                         sudo sed -i 's/max_connections = 100/max_connections = 300/g' /etc/postgresql/10/main/postgresql.conf
                         sudo sed -i 's/shared_buffers = 128MB/shared_buffers = 256MB/g' /etc/postgresql/10/main/postgresql.conf
                         sudo systemctl restart postgresql.service
                         sudo -u postgres -i createuser --createdb leasehold
-                        sudo -u postgres -i createdb lisk_test --owner leasehold
-                        sudo -u postgres -i createdb leasehold_test --owner leasehold
-                        sudo -Hiu postgres psql -d lisk_test -c "alter user leasehold with password '$DB_PASSWORD';"
-                        sudo -Hiu postgres psql -d lisk_test -c "alter role leasehold superuser;"
+                        sudo -u postgres -i createdb $LSK_DB --owner leasehold
+                        sudo -u postgres -i createdb $LSH_DB --owner leasehold
+                        sudo -Hiu postgres psql -d $LSK_DB -c "alter user leasehold with password '$DB_PASSWORD';"
+                        sudo -Hiu postgres psql -d $LSK_DB -c "alter role leasehold superuser;"
                         echo -e "${GREEN}Done!\n ${NC}"
                         
                         load_lsk_snapshot
