@@ -28,7 +28,7 @@ fi
 
 [[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="" || LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
 [[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-11697856.gz" || LSK_SNAPSHOT="lisk_test_backup-10310704.gz"
-[[ "$NETWORK" == "mainnet" ]] && LSH_DB="leasehold_main" && LSK_DB="lisk_main" || LSH_DB="leasehold_test" && LSK_DB="lisk_test"
+[[ "$NETWORK" == "mainnet" ]] && { LSH_DB="leasehold_main"; LSK_DB="lisk_main"; } || { LSH_DB="leasehold_test"; LSK_DB="lisk_test"; }
 DEX_SNAPSHOT_FILE="https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/$NETWORK/dex-snapshot-lsh-lsk.json"
 
 
