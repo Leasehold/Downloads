@@ -25,7 +25,7 @@ if [[ "$NETWORK" != "mainnet" && "$NETWORK" != "testnet" ]];then
 fi
 
 
-
+[[ "$NETWORK" == "mainnet" ]] && PORT="8010" || PORT="7010"
 [[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="" || LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
 [[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-11697856.gz" || LSK_SNAPSHOT="lisk_test_backup-10310704.gz"
 [[ "$NETWORK" == "mainnet" ]] && { LSH_DB="leasehold_main"; LSK_DB="lisk_main"; } || { LSH_DB="leasehold_test"; LSK_DB="lisk_test"; }
@@ -172,4 +172,4 @@ fi
 
 start_lsh
 
-echo -e "${GREEN} \nAll steps are done! You can verify if the process is running by \"pm2 list\" and accessing endpoint: http://$IP:7010/api/node/status\n ${NC}"
+echo -e "${GREEN} \nAll steps are done! You can verify if the process is running by \"pm2 list\" and accessing endpoint: http://$IP:$PORT/api/node/status\n ${NC}"
