@@ -24,6 +24,10 @@ if [[ "$NETWORK" != "mainnet" && "$NETWORK" != "testnet" ]];then
 	exit 1
 fi
 
+ if [ `whoami` = 'leasehold' ] && [ ! -d ~/leasehold-core ];then
+	echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" SHOULD exist in home directory!\n ${NC}"
+	exit 0
+fi
 
 [[ "$NETWORK" == "mainnet" ]] && PORT="8010" || PORT="7010"
 [[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="" || LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
