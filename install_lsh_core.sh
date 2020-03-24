@@ -24,7 +24,7 @@ if [[ "$NETWORK" != "mainnet" && "$NETWORK" != "testnet" ]];then
 	exit 1
 fi
 
-if [[ `whoami` != 'leasehold' || ! -d ~/leasehold-core ]];then
+if [[ `whoami` != 'leasehold' || -d ~/leasehold-core ]];then
         echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should not exist in home directory!\n ${NC}"
         exit 1
 fi
@@ -126,7 +126,7 @@ install_lsh_core ()
                         sudo /usr/bin/npm install --no-progress pm2 -g
                         echo -e "${GREEN}Done!\n ${NC}"
         else
-                echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should not exist in home directory!\n ${NC}"
+                echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should exist in home directory!\n ${NC}"
                         exit 0
                         fi
 
