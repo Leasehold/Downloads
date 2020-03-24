@@ -24,9 +24,9 @@ if [[ "$NETWORK" != "mainnet" && "$NETWORK" != "testnet" ]];then
 	exit 1
 fi
 
- if [[ `whoami` == 'leasehold' && ! -d ~/leasehold-core ]];then
-	echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" SHOULD exist in home directory!\n ${NC}"
-	exit 0
+if [[ `whoami` != 'leasehold' && ! -d ~/leasehold-core ]];then
+        echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should not exist in home directory!\n ${NC}"
+        exit 1
 fi
 
 [[ "$NETWORK" == "mainnet" ]] && PORT="8010" || PORT="7010"
@@ -146,7 +146,7 @@ start_lsh ()
                                         exit 0
                         fi
         else
-                echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" SHOULD exist in home directory!\n ${NC}"
+                echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should not exist in home directory!\n ${NC}"
         fi
 }
 
