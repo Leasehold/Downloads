@@ -14,24 +14,24 @@ while getopts :n:t: option
                 case "${option}"
                 in
                 n) NETWORK=${OPTARG};;
-		t) TYPE=${OPTARG};;
+				t) TYPE=${OPTARG};;
                 esac
         done
 
 
 if [[ "$NETWORK" != "mainnet" && "$NETWORK" != "testnet" ]];then
-	echo -e "${RED} \nYou did not specify the network using -n flag (-n mainnet/testnet)\n ${NC}"
-	exit 1
+		echo -e "${RED} \nYou did not specify the network using -n flag (-n mainnet/testnet)\n ${NC}"
+		exit 1
 fi
 
-if [[ `whoami` != 'leasehold' || -d ~/leasehold-core ]];then
-        echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should not exist in home directory!\n ${NC}"
-        exit 1
+if [[ `whoami` != 'leasehold' || -d ~/leasehold-core-$NETWORK ]];then
+		echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core-$NETWORK\" should not exist in home directory!\n ${NC}"
+		exit 1
 fi
 
 [[ "$NETWORK" == "mainnet" ]] && PORT="8010" || PORT="7010"
-[[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="" || LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
-[[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-11697856.gz" || LSK_SNAPSHOT="lisk_test_backup-10310704.gz"
+[[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="leasehold_main_backup_26032020.gz" || LSH_SNAPSHOT="leasehold_test_backup_26032020.gz"
+[[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-11844273.gz" || LSK_SNAPSHOT="lisk_test_backup-10432737.gz"
 [[ "$NETWORK" == "mainnet" ]] && { LSH_DB="leasehold_main"; LSK_DB="lisk_main"; } || { LSH_DB="leasehold_test"; LSK_DB="lisk_test"; }
 DEX_SNAPSHOT_FILE="https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/$NETWORK/dex-snapshot-lsh-lsk.json"
 
@@ -107,7 +107,7 @@ prepare_db ()
                         echo -e "${GREEN}Done!\n ${NC}"
                         
                         load_lsk_snapshot
-                        [[ "$NETWORK" == "testnet" ]] && load_lsh_snapshot 
+                        load_lsh_snapshot 
                 fi
 
 }
@@ -116,17 +116,17 @@ prepare_db ()
 install_lsh_core ()
 {
 
-        if [ `whoami` = 'leasehold' ] && [ ! -d ~/leasehold-core ];then
+        if [ `whoami` = 'leasehold' ] && [ ! -d ~/leasehold-core-$NETWORK ];then
                 echo -e "${GREEN} \nInstalling Leasehold packages:\n ${NC}"
                         cd ~
-                        /usr/bin/git clone https://github.com/Leasehold/leasehold-core.git
-                        cd ~/leasehold-core
+                        /usr/bin/git clone https://github.com/Leasehold/leasehold-core.git leasehold-core-$NETWORK
+                        cd ~/leasehold-core-$NETWORK
                         [[ "$NETWORK" == "testnet" ]] && wget -qN "https://raw.githubusercontent.com/Leasehold/Downloads/master/configs/testnet/config.json"
 			sudo /usr/bin/npm install --no-progress
                         sudo /usr/bin/npm install --no-progress pm2 -g
                         echo -e "${GREEN}Done!\n ${NC}"
         else
-                echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should exist in home directory!\n ${NC}"
+                echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core-$NETWORK\" should exist in home directory!\n ${NC}"
                         exit 0
                         fi
 
@@ -135,18 +135,18 @@ install_lsh_core ()
 
 start_lsh ()
 {
-        if [ `whoami` = 'leasehold' ] && [ -f ~/leasehold-core/index.js ];then
+        if [ `whoami` = 'leasehold' ] && [ -f ~/leasehold-core-$NETWORK/index.js ];then
                 echo -e "${GREEN} \nStarting process with \"pm2\"\n ${NC}"
-                        if ! /usr/bin/pm2 list | grep -w "leasehold-core"; then
-                                cd ~/leasehold-core
-                                pm2 start index.js --name "leasehold-core"
+                        if ! /usr/bin/pm2 list | grep -w "leasehold-core-$NETWORK"; then
+                                cd ~/leasehold-core-$NETWORK
+                                pm2 start index.js --name "leasehold-core-$NETWORK"
                                 echo -e "${GREEN}Done!\n ${NC}"
                         else
-                                echo -e "${RED} \nThere is already a process \"leasehold-core\" in pm2! Delete it before running again (pm2 delete leasehold-core)\n ${NC}"
+                                echo -e "${RED} \nThere is already a process \"leasehold-core-$NETWORK\" in pm2! Delete it before running again (pm2 delete leasehold-core-$NETWORK)\n ${NC}"
                                         exit 0
                         fi
         else
-                echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core\" should not exist in home directory!\n ${NC}"
+                echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core-$NETWORK\" should not exist in home directory!\n ${NC}"
         fi
 }
 
@@ -154,7 +154,7 @@ start_lsh ()
 configure_dex()
 {
         echo -e "${GREEN} \nPreparing DEX node! \n ${NC}"
-        cd ~/leasehold-core && wget -q "$DEX_SNAPSHOT_FILE"
+        cd ~/leasehold-core-$NETWORK && wget -q "$DEX_SNAPSHOT_FILE"
         sed -i 's/"moduleEnabled":\s*false\s*,/"moduleEnabled": true,/g' ./config.json
         read -p "Enter your Lisk wallet address to be used in config file: " lskWallet && sed -i "/lsk/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lskWallet\",/" ./config.json
         read -p "Enter your Leasehold wallet address to be used in config file: " lshWallet && sed -i "/lsh/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lshWallet\",/" ./config.json
