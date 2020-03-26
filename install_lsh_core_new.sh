@@ -14,19 +14,19 @@ while getopts :n:t: option
                 case "${option}"
                 in
                 n) NETWORK=${OPTARG};;
-		t) TYPE=${OPTARG};;
+				t) TYPE=${OPTARG};;
                 esac
         done
 
 
 if [[ "$NETWORK" != "mainnet" && "$NETWORK" != "testnet" ]];then
-	echo -e "${RED} \nYou did not specify the network using -n flag (-n mainnet/testnet)\n ${NC}"
-	exit 1
+		echo -e "${RED} \nYou did not specify the network using -n flag (-n mainnet/testnet)\n ${NC}"
+		exit 1
 fi
 
 if [[ `whoami` != 'leasehold' || -d ~/leasehold-core-$NETWORK ]];then
-        echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core-$NETWORK\" should not exist in home directory!\n ${NC}"
-        exit 1
+		echo -e "${YELLOW} \nYou have to run this script as user \"leasehold\" and folder \"leasehold-core-$NETWORK\" should not exist in home directory!\n ${NC}"
+		exit 1
 fi
 
 [[ "$NETWORK" == "mainnet" ]] && PORT="8010" || PORT="7010"
