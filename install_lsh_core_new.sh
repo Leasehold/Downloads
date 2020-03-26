@@ -30,8 +30,8 @@ if [[ `whoami` != 'leasehold' || -d ~/leasehold-core-$NETWORK ]];then
 fi
 
 [[ "$NETWORK" == "mainnet" ]] && PORT="8010" || PORT="7010"
-[[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="" || LSH_SNAPSHOT="leasehold_test_backup_21022020.gz"
-[[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-11697856.gz" || LSK_SNAPSHOT="lisk_test_backup-10310704.gz"
+[[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="leasehold_main_backup_26032020.gz" || LSH_SNAPSHOT="leasehold_test_backup_26032020.gz"
+[[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-11844273.gz" || LSK_SNAPSHOT="lisk_test_backup-10432737.gz"
 [[ "$NETWORK" == "mainnet" ]] && { LSH_DB="leasehold_main"; LSK_DB="lisk_main"; } || { LSH_DB="leasehold_test"; LSK_DB="lisk_test"; }
 DEX_SNAPSHOT_FILE="https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/$NETWORK/dex-snapshot-lsh-lsk.json"
 
@@ -107,7 +107,7 @@ prepare_db ()
                         echo -e "${GREEN}Done!\n ${NC}"
                         
                         load_lsk_snapshot
-                        [[ "$NETWORK" == "testnet" ]] && load_lsh_snapshot 
+                        load_lsh_snapshot 
                 fi
 
 }
