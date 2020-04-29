@@ -139,7 +139,7 @@ start_lsh ()
                 echo -e "${GREEN} \nStarting process with \"pm2\"\n ${NC}"
                         if ! /usr/bin/pm2 list | grep -w "leasehold-core-$NETWORK"; then
                                 cd ~/leasehold-core-$NETWORK
-                                pm2 start index.js --name "leasehold-core-$NETWORK -o "/dev/null" -e "/dev/null""
+                                pm2 start index.js --name "leasehold-core-$NETWORK" -o "/dev/null" -e "/dev/null"
                                 echo -e "${GREEN}Done!\n ${NC}"
                         else
                                 echo -e "${RED} \nThere is already a process \"leasehold-core-$NETWORK\" in pm2! Delete it before running again (pm2 delete leasehold-core-$NETWORK)\n ${NC}"
