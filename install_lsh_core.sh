@@ -156,12 +156,12 @@ configure_dex()
         echo -e "${GREEN} \nPreparing DEX node! \n ${NC}"
         cd ~/leasehold-core-$NETWORK && wget -q "$DEX_SNAPSHOT_FILE"
         sed -i 's/"moduleEnabled":\s*false\s*,/"moduleEnabled": true,/g' ./config.json
-        read -p "Enter your Lisk wallet address to be used in config file: " lskWallet && sed -i "/lsk/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lskWallet\",/" ./config.json
-        read -p "Enter your Leasehold wallet address to be used in config file: " lshWallet && sed -i "/lsh/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lshWallet\",/" ./config.json
-        read -p "Enter your Lisk sharedPassphrase: " lskSharedPassphrase && sed -i "/lsk/,/sharedPassphrase/s/\"sharedPassphrase\":\s*\"\"\s*,/\"sharedPassphrase\": \"$lskSharedPassphrase\",/" ./config.json
-        read -p "Enter your Leasehold sharedPassphrase: " lshSharedPassphrase && sed -i "/lsh/,/sharedPassphrase/s/\"sharedPassphrase\":\s*\"\"\s*,/\"sharedPassphrase\": \"$lshSharedPassphrase\",/" ./config.json
-        read -p "Enter your Lisk passphrase: " lskPassphrase && sed -i "/lsk/,/passphrase/s/\"passphrase\":\s*\"\"\s*,/\"passphrase\": \"$lskPassphrase\",/" ./config.json
-        read -p "Enter your Leasehold passphrase: " lshPassphrase && sed -i "/lsh/,/passphrase/s/\"passphrase\":\s*\"\"\s*,/\"passphrase\": \"$lshPassphrase\",/" ./config.json
+        read -p "Enter the shared Lisk wallet address to be used in config file: " lskWallet && sed -i "/lsk/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lskWallet\",/" ./config.json
+        read -p "Enter the shared Leasehold wallet address to be used in config file: " lshWallet && sed -i "/lsh/,/walletAddress/s/\"walletAddress\":\s*\"\"\s*,/\"walletAddress\": \"$lshWallet\",/" ./config.json
+        read -p "Enter the Lisk sharedPassphrase: " lskSharedPassphrase && sed -i "/lsk/,/sharedPassphrase/s/\"sharedPassphrase\":\s*\"\"\s*,/\"sharedPassphrase\": \"$lskSharedPassphrase\",/" ./config.json
+        read -p "Enter the Leasehold sharedPassphrase: " lshSharedPassphrase && sed -i "/lsh/,/sharedPassphrase/s/\"sharedPassphrase\":\s*\"\"\s*,/\"sharedPassphrase\": \"$lshSharedPassphrase\",/" ./config.json
+        read -p "Enter your PERSONAL Lisk passphrase: " lskPassphrase && sed -i "/lsk/,/passphrase/s/\"passphrase\":\s*\"\"\s*,/\"passphrase\": \"$lskPassphrase\",/" ./config.json
+        read -p "Enter your PERSONAL Leasehold passphrase: " lshPassphrase && sed -i "/lsh/,/passphrase/s/\"passphrase\":\s*\"\"\s*,/\"passphrase\": \"$lshPassphrase\",/" ./config.json
 
         echo -e "${GREEN}Done!\n ${NC}"
 }
