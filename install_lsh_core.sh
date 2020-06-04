@@ -94,7 +94,9 @@ prepare_db ()
         echo -e "${GREEN} \nRunning Postgres database steps!\n ${NC}"
 
                 if sudo -Hiu postgres psql -lqt | cut -d \| -f 1 | grep -qw '$LSK_DB\|$LSH_DB'; then
-                        echo -e "${YELLOW} \nSome databases already exist! You can see existing databases with: sudo -Hiu postgres psql -lqt\n ${NC}"
+                        echo -e "${YELLOW} \nSome databases already exist! Dropping them!\n ${NC}"
+                        sudo -u postgres -i dropdb $LSK_DB
+			sudo -u postgres -i dropdb $LSH_DB
                 else
                         sudo sed -i 's/max_connections = 100/max_connections = 300/g' /etc/postgresql/10/main/postgresql.conf
                         sudo sed -i 's/shared_buffers = 128MB/shared_buffers = 256MB/g' /etc/postgresql/10/main/postgresql.conf
