@@ -32,8 +32,8 @@ fi
 
 
 if [[ ! -z $TYPE && $TYPE == dex ]];then
-        echo -e "${GREEN} \nCollecting DEX info! \n ${NC}"
-        read -p "Enter the shared Lisk wallet address to be used in config file: " lskWallet
+		echo -e "${GREEN} \nCollecting DEX info! \n ${NC}"
+		read -p "Enter the shared Lisk wallet address to be used in config file: " lskWallet
 		read -p "Enter the shared Leasehold wallet address to be used in config file: " lshWallet
 		read -p "Enter the Lisk sharedPassphrase: " lskSharedPassphrase
 		read -p "Enter the Leasehold sharedPassphrase: " lshSharedPassphrase
