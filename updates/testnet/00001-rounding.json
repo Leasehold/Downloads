@@ -1,0 +1,18 @@
+{
+  "id": "00001-rounding",
+  "type": "module",
+  "target": "lisk_dex_lsh_lsk",
+  "criteria": {
+    "baseChainHeight": 11065955
+  },
+  "change": {
+    "chains": {
+      "lsk": {
+        "minPartialTake": 100000000
+      },
+      "lsh": {
+        "minPartialTake": 100000000
+      }
+    }
+  }
+}

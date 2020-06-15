@@ -1,0 +1,19 @@
+{
+  "id": "00001-precision-and-rounding",
+  "type": "module",
+  "target": "lisk_dex_lsh_lsk",
+  "criteria": {
+    "baseChainHeight": 12613750
+  },
+  "change": {
+    "priceDecimalPrecision": 2,
+    "chains": {
+      "lsk": {
+        "minPartialTake": 100000000
+      },
+      "lsh": {
+        "minPartialTake": 100000000
+      }
+    }
+  }
+}
