@@ -43,7 +43,7 @@ if [[ ! -z $TYPE && $TYPE == dex ]];then
 fi
 
 [[ "$NETWORK" == "mainnet" ]] && PORT="8010" || PORT="7010"
-[[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="leasehold_main_backup_03062020.gz" || LSH_SNAPSHOT="leasehold_test_backup_26032020.gz"
+[[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="leasehold_main_backup_25062020.gz" || LSH_SNAPSHOT="leasehold_test_backup_26032020.gz"
 [[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-12628560.gz" || LSK_SNAPSHOT="lisk_test_backup-11093682.gz"
 [[ "$NETWORK" == "mainnet" ]] && { LSH_DB="leasehold_main"; LSK_DB="lisk_main"; } || { LSH_DB="leasehold_test"; LSK_DB="lisk_test"; }
 DEX_SNAPSHOT_FILE="https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/$NETWORK/dex-snapshot-lsh-lsk.json"
@@ -94,7 +94,7 @@ load_lsk_snapshot ()
 load_lsh_snapshot ()
 {
 	echo -e "${GREEN} \nUploading LSH snapshots to DB!\n ${NC}"
-	wget https://github.com/rajmond/download/raw/master/snapshots/$NETWORK/$LSH_SNAPSHOT
+	wget --no-check-certificate https://testnet.leasehold.io/snapshots/$NETWORK/$LSH_SNAPSHOT
 	gzip --decompress --to-stdout ./$LSH_SNAPSHOT | psql $LSH_DB -U leasehold
 	rm -f ./$LSH_SNAPSHOT
 	echo -e "${GREEN}Done!\n ${NC}"
