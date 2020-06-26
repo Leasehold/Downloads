@@ -1,0 +1,11 @@
+{
+  "id": "00002-use-block-time",
+  "type": "module",
+  "target": "lisk_dex_lsh_lsk",
+  "criteria": {
+    "baseChainHeight": 11135639
+  },
+  "change": {
+    "useBlockTime": true
+  }
+}
