@@ -84,7 +84,7 @@ echo -e "${GREEN}Done!\n ${NC}"
 load_lsk_snapshot ()
 {
 	echo -e "${GREEN} \nUploading LSK snapshots to DB!\n ${NC}"
-	wget https://snapshots.lisk.io/$NETWORK/$LSK_SNAPSHOT
+	wget --no-check-certificate https://snapshots.lisk.io/$NETWORK/$LSK_SNAPSHOT
 	gzip --decompress --to-stdout ./$LSK_SNAPSHOT | psql $LSK_DB -U leasehold
 	rm -f ./$LSK_SNAPSHOT
 	echo -e "${GREEN}Done!\n ${NC}"
