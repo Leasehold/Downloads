@@ -44,7 +44,7 @@ fi
 
 [[ "$NETWORK" == "mainnet" ]] && PORT="8010" || PORT="7010"
 [[ "$NETWORK" == "mainnet" ]] && LSH_SNAPSHOT="leasehold_main_backup_13072020.gz" || LSH_SNAPSHOT="leasehold_test_backup_26032020.gz"
-[[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-13068186.gz" || LSK_SNAPSHOT="lisk_test_backup-11369133.gz"
+[[ "$NETWORK" == "mainnet" ]] && LSK_SNAPSHOT="lisk_main_backup-13301233.gz" || LSK_SNAPSHOT="lisk_test_backup-11703292.gz"
 [[ "$NETWORK" == "mainnet" ]] && { LSH_DB="leasehold_main"; LSK_DB="lisk_main"; } || { LSH_DB="leasehold_test"; LSK_DB="lisk_test"; }
 DEX_SNAPSHOT_FILE="https://raw.githubusercontent.com/Leasehold/Downloads/master/dex-snapshots/$NETWORK/dex-snapshot-lsh-lsk.json"
 
@@ -84,7 +84,7 @@ echo -e "${GREEN}Done!\n ${NC}"
 load_lsk_snapshot ()
 {
 	echo -e "${GREEN} \nUploading LSK snapshots to DB!\n ${NC}"
-	wget http://snapshots.lisk.io.s3-eu-west-1.amazonaws.com/lisk/$NETWORK/$LSK_SNAPSHOT
+	wget https://snapshots.lisk.io/$NETWORK/$LSK_SNAPSHOT
 	gzip --decompress --to-stdout ./$LSK_SNAPSHOT | psql $LSK_DB -U leasehold
 	rm -f ./$LSK_SNAPSHOT
 	echo -e "${GREEN}Done!\n ${NC}"
