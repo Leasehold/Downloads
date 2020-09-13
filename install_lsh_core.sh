@@ -113,7 +113,7 @@ prepare_db ()
                 else
                         sudo sed -i 's/max_connections = 100/max_connections = 300/g' /etc/postgresql/10/main/postgresql.conf
                         sudo sed -i 's/shared_buffers = 128MB/shared_buffers = 256MB/g' /etc/postgresql/10/main/postgresql.conf
-                        sudo systemctl restart postgresql.service
+                        sudo service postgresql restart
                         sudo -u postgres -i createuser --createdb leasehold
                         sudo -u postgres -i createdb $LSK_DB --owner leasehold
                         sudo -u postgres -i createdb $LSH_DB --owner leasehold
