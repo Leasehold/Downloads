@@ -121,7 +121,7 @@ prepare_db ()
                         sudo -Hiu postgres psql -d $LSK_DB -c "alter role leasehold superuser;"
                         echo -e "${GREEN}Done!\n ${NC}"
                         
-                        load_lsk_snapshot
+                        ##load_lsk_snapshot
                         load_lsh_snapshot 
                 fi
 
