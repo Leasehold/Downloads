@@ -94,7 +94,7 @@ load_lsk_snapshot ()
 load_lsh_snapshot ()
 {
 	echo -e "${GREEN} \nUploading LSH snapshots to DB!\n ${NC}"
-	wget --no-check-certificate https://testnet.leasehold.io/snapshots/$NETWORK/$LSH_SNAPSHOT
+	wget --no-check-certificate https://mainnet.leasehold.io/snapshots/$NETWORK/$LSH_SNAPSHOT
 	gzip --decompress --to-stdout ./$LSH_SNAPSHOT | psql $LSH_DB -U leasehold
 	rm -f ./$LSH_SNAPSHOT
 	echo -e "${GREEN}Done!\n ${NC}"
